@@ -216,9 +216,23 @@
 
 <section id="gallery">
   <div class="wrap">
-    <p class="kicker">Ph.D. hardware photos</p>
-    <h2>Validated on real arrays</h2>
-    <p class="lead">Reconfiguration was tested outdoors at IIT Roorkee on a 2&times;3 array with 12 solid-state relays and an ATmega-2560 controller; the tracker was tested on a DC microgrid with emulated PV and battery sources.</p>
+    <p class="kicker">Ph.D. hardware &middot; IIT Roorkee</p>
+    <h2>Hardware I built during my Ph.D.</h2>
+    <p class="lead">Both algorithms were tested on real hardware, not only in simulation.</p>
+    <div class="grid g2" style="margin-bottom:22px">
+      <div class="card">
+        <span class="tag">Done &middot; reconfiguration prototype</span>
+        <h3>Relay-switched 2&times;3 PV array</h3>
+        <p>I designed and built a 6-panel array whose connections are changed by 12 solid-state relays. An ATmega2560 controller reads ACS712 row-current sensors, runs the reconfiguration logic and drives the relays through demultiplexer logic on a custom FR4 PCB. It was tested outdoors under shading sheets, and DOR-SD raised the output power by 141.4% over the unreconfigured array in the test case.</p>
+        <div class="stats"><span class="pill">ATmega2560</span><span class="pill">12 solid-state relays</span><span class="pill">ACS712</span><span class="pill">FR4 PCB</span></div>
+      </div>
+      <div class="card">
+        <span class="tag">Done &middot; DC microgrid</span>
+        <h3>120 V DC microgrid</h3>
+        <p>I designed and built a low-voltage DC microgrid with a 120 V bus, sizing the inductors and capacitors of the buck and boost converters that connect the PV and battery emulator sources. The modified P&amp;O tracker held the DC bus within &plusmn;2%, with control developed on dSPACE DS1104 and validated on OPAL-RT 4512.</p>
+        <div class="stats"><span class="pill">Buck &amp; boost converters</span><span class="pill">PV and battery emulators</span><span class="pill">dSPACE DS1104</span><span class="pill">OPAL-RT 4512</span></div>
+      </div>
+    </div>
     <div class="grid g3 hw-grid">
       <figure><img src="assets/hw-array.jpg" loading="lazy" alt="Switching matrix and relays on the 2 by 3 PV array"><figcaption>Fig. 3.13(a). Switching matrix, relays and controller.</figcaption></figure>
       <figure><img src="assets/hw-rig.jpg" loading="lazy" alt="Outdoor 2 by 3 PV array with shaded sheets and power analyser"><figcaption>Fig. 3.13(b). Outdoor 2&times;3 array with shading sheets and power analyser.</figcaption></figure>
@@ -280,8 +294,6 @@
     <ul class="pubs">
       <li><div><div class="t">A Novel Adaptive and Modified Controller for Tracking Global Peak Under Partial Shading Conditions</div><div class="v">N. Bhati and M. Tripathy. <i>Computers and Electrical Engineering</i>, Elsevier (Q1, IF 4.9), vol. 118, no. 109372, Jun. 2024.</div></div><span class="status pub">Published</span></li>
       <li><div><div class="t">Generative residual framework for imbalanced solar PV fault classification and identification</div><div class="v">N. Bhati and M. Tripathy. <i>Solar Energy</i>, Elsevier (Q1, IF 6.6), vol. 314, no. 114678, 2026.</div></div><span class="status pub">Published</span></li>
-      <li><div><div class="t">Gradient Descent-Based Optimal Shade Dispersion Approach and Power Mismatch Minimization in Solar PV Array Under Partial Shading</div><div class="v">N. Bhati and M. Tripathy. <i>IEEE Transactions on Consumer Electronics</i> (Q1, IF 10.9), 2026.</div></div><span class="status rev">Under review</span></li>
-      <li><div><div class="t">A Novel Transposition Search on Permutation Space Based Reconfiguration Approach for Solar PV Arrays Under Nonuniform Irradiance</div><div class="v">N. Bhati and M. Tripathy. <i>Solar Energy</i>, Elsevier (Q1, IF 6.6), 2026.</div></div><span class="status rev">Under review</span></li>
     </ul>
     <h3 style="margin:30px 0 4px;font-size:20px">Conference papers</h3>
     <ul class="pubs">
@@ -351,8 +363,13 @@
   Promise.all(checks).then(function(){
     ['demos','gallery'].forEach(function(id){
       var s=document.getElementById(id); if(!s) return;
-      var shown=Array.prototype.filter.call(s.querySelectorAll('figure'),function(x){return x.style.display!=='none';});
-      if(!shown.length) s.classList.add('hidden');
+      var grids=Array.prototype.filter.call(s.querySelectorAll('.grid'),function(g){return g.querySelector('figure');});
+      var any=false;
+      grids.forEach(function(g){
+        var shown=Array.prototype.filter.call(g.querySelectorAll('figure'),function(x){return x.style.display!=='none';});
+        if(!shown.length) g.classList.add('hidden'); else any=true;
+      });
+      if(id==='demos' && !any) s.classList.add('hidden');
     });
   });
 })();
